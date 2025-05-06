@@ -77,6 +77,9 @@ function parsePrompt(prompt) {
 }
 
 exports.handlePrompt = async (req, res) => {
+    // derive session id and ensure page exists
+    const sessionId = req.headers['x-session-id'] || req.ip;
+    const page = await getPageForSession(sessionId);
     const { prompt } = req.body;
     if (!prompt) {
         return res.status(400).json({ message: 'Prompt is required.' });
@@ -100,11 +103,7 @@ exports.handlePrompt = async (req, res) => {
     }
 
     try {
-        // derive session identifier (e.g. from client cookie or IP)
-        const sessionId = req.headers['x-session-id'] || req.ip;
-        const page = await getPageForSession(sessionId);
-
-        // Handle language change commands by clicking flags in browser
+        // Handle language change commands by clicking flags
         if (action === 'langen') {
             await page.waitForSelector('#flag-en', { visible: true });
             await page.click('#flag-en');
@@ -121,7 +120,7 @@ exports.handlePrompt = async (req, res) => {
         // Determine language prefix for URLs
         const lang = sessionLangMap.get(sessionId) || 'en';
 
-        // handle configured navigation
+        // Perform navigation action in existing browser tab
         if (ACTIONS[action]) {
             const { path: p, suggestion } = ACTIONS[action];
             await page.goto(`${BASE_URL}${p}`, { waitUntil: 'networkidle2' });

@@ -83,7 +83,7 @@ module.exports = {
             'home', 'home page', 'home section',
             'navigate to home page', 'go to home page',
         ],
-        path: '/',
+        path: '',
         suggestion: 'navigate to home page'
     },
     gs1inretail:{
@@ -267,4 +267,272 @@ module.exports = {
         path: 'gln',
         suggestion: 'navigate to GLN page'
     },
+    GRAI:{
+        synonyms: ['GRAI', 'GRAI page', 'GRAI section',
+            'navigate to GRAI page', 'go to GRAI page',
+            'GRAI', 'GRAI page', 'GRAI section',
+            'go to GRAI page',
+            'GRAI', 'GRAI page', 'GRAI section',
+             'go to GRAI page','GRAI','Fixed Assets Standardization','navigate to Fixed Assets Standardization page', 'go to Fixed Assets Standardization page',
+             'Fixed Assets Standardization', 'Fixed Assets Standardization page', 'Fixed Assets Standardization section',
+             'navigate to Fixed Assets Standardization page', 'go to Fixed Assets Standardization page','Fixed Assets Standardization'
+           
+        ],
+        path: 'GRAI',
+        suggestion: 'navigate to GRAI page'
+    },
+    gtinGlobalTradeNumber:{
+        synonyms: ['GTIN Global Trade Number', 'GTIN Global Trade Number page', 'GTIN Global Trade Number section',
+            'navigate to GTIN Global Trade Number page', 'go to GTIN Global Trade Number page',
+            'GTIN Global Trade Number', 'GTIN Global Trade Number page', 'GTIN Global Trade Number section',
+            'navigate to GTIN Global Trade Number page', 'go to GTIN Global Trade Number page',
+            'GTIN Global Trade Number', 'GTIN Global Trade Number page', 'GTIN Global Trade Number section',
+            'navigate to GTIN Global Trade Number page', 'go to GTIN Global Trade Number page','GTIN Global Trade Number',
+            'GTIN','navigate to GTIN page', 'go to GTIN page',
+            'GTIN', 'GTIN page', 'GTIN section',
+            'go to GTIN page',
+            'GTIN', 'GTIN page', 'GTIN section',
+             'go to GTIN page','GTIN'
+        ],
+        path: 'gtin-global-trade-number',
+        suggestion: 'navigate to GTIN Global Trade Number page'
+    },
+
+    SSCC:{
+        synonyms: ['SSCC', 'SSCC page', 'SSCC section',
+            'navigate to SSCC page', 'go to SSCC page',
+            'SSCC', 'SSCC page', 'SSCC section',
+            'go to SSCC page',
+            'SSCC', 'SSCC page', 'SSCC section',
+             'go to SSCC page','SSCC','Serial Shipping Container Code','navigate to Serial Shipping Container Code page', 'go to Serial Shipping Container Code page',
+             'Serial Shipping Container Code', 'Serial Shipping Container Code page', 'Serial Shipping Container Code section',
+             'navigate to Serial Shipping Container Code page', 'go to Serial Shipping Container Code page','Serial Shipping Container Code'
+        ],
+        path: 'SSCC',
+        suggestion: 'navigate to SSCC page'
+    },
+    GIAI:{
+        synonyms: ['GIAI', 'GIAI page', 'GIAI section',
+            'navigate to GIAI page', 'go to GIAI page',
+            'GIAI', 'GIAI page', 'GIAI section',
+            'go to GIAI page',
+            'GIAI', 'GIAI page', 'GIAI section',
+             'go to GIAI page','GIAI','Global Individual Asset Identifier','navigate to Global Individual Asset Identifier page', 'go to Global Individual Asset Identifier page',
+             'Global Individual Asset Identifier', 'Global Individual Asset Identifier page', 'Global Individual Asset Identifier section',
+             'navigate to Global Individual Asset Identifier page', 'go to Global Individual Asset Identifier page','Global Individual Asset Identifier'
+        ],
+        path: 'GIAI',
+        suggestion: 'navigate to GIAI page'
+    },
+    GSRN:{
+        synonyms: ['GSRN', 'GSRN page', 'GSRN section',
+            'navigate to GSRN page', 'go to GSRN page',
+            'GSRN', 'GSRN page', 'GSRN section',
+            'go to GSRN page',
+            'GSRN', 'GSRN page', 'GSRN section',
+            
+        ],
+        path: 'GSRN',
+        suggestion: 'navigate to GSRN page'
+    },
+    UDI:{
+        synonyms: ['UDI', 'UDI page', 'UDI section',
+            'navigate to UDI page', 'go to UDI page',
+            'UDI', 'UDI page', 'UDI section',
+            'go to UDI page',
+            'UDI', 'UDI page', 'UDI section',
+             'go to UDI page','UDI','Unique Device Identifier','navigate to Unique Device Identifier page', 'go to Unique Device Identifier page',
+             'Unique Device Identifier', 'Unique Device Identifier page', 'Unique Device Identifier section',
+             'navigate to Unique Device Identifier page', 'go to Unique Device Identifier page','Unique Device Identifier'
+        ],
+        path: 'UDI',
+        suggestion: 'navigate to UDI page'
+    },
+    marketplace:{
+        synonyms: ['marketplace', 'marketplace page', 'marketplace section',
+            'navigate to marketplace page', 'go to marketplace page',
+            'marketplace page', 
+            'navigate to Marketplace page', 
+             'go to Marketplace page',
+        ],
+        path: 'marketplace',
+        suggestion: 'navigate to marketplace page'
+    },
+    sellingongoogle:{
+        synonyms: ['selling on google', 'selling on google page', 'selling on google section',
+            'navigate to selling on google page', 'go to selling on google page',
+            'selling on google', 'selling on google page', 'selling on google section',
+            'navigate to selling on google page', 'go to selling on google page',
+            'selling on google', 'selling on google page', 'selling on google section',
+            'navigate to selling on google page', 'go to selling on google page','selling on google'
+        ],
+        path: 'selling-on-google',
+        suggestion: 'navigate to selling on google page'
+    },  
+    buildingonlinestore:{
+        synonyms: ['building online store', 'building online store page', 'building online store section',
+            'navigate to building online store page', 'go to building online store page',
+            'building online store', 'building online store page', 'building online store section',
+            'navigate to building online store page', 'go to building online store page',
+            'building online store', 'building online store page', 'building online store section',
+            'navigate to building online store page', 'go to building online store page','building online store'
+        ],
+        path: 'building-online-store',
+        suggestion: 'navigate to building online store page'
+    },
+    barcodelabelservices:{
+        synonyms: ['barcode label services', 'barcode label services page', 'barcode label services section',
+            'navigate to barcode label services page', 'go to barcode label services page',
+            'barcode label services', 'barcode label services page', 'barcode label services section',
+            'navigate to barcode label services page', 'go to barcode label services page',
+            'barcode label services', 'barcode label services page', 'barcode label services section',
+            'navigate to barcode label services page', 'go to barcode label services page','barcode label services'
+        ],
+        path: 'barcode-label-services',
+        suggestion: 'navigate to barcode label services page'
+    },
+    barcodeverifier:{
+        synonyms: ['barcode verifier', 'barcode verifier page', 'barcode verifier section',
+            'navigate to barcode verifier page', 'go to barcode verifier page',
+            'barcode verifier', 'barcode verifier page', 'barcode verifier section',
+            'navigate to barcode verifier page', 'go to barcode verifier page',
+            'barcode verifier', 'barcode verifier page', 'barcode verifier section',
+            'navigate to barcode verifier page', 'go to barcode verifier page','barcode verifier'
+        ],
+        path: 'barcode-verifier',
+        suggestion: 'navigate to barcode verifier page'
+    },
+    GDSN:{
+        synonyms: ['GDSN', 'GDSN page', 'GDSN section',
+            'navigate to GDSN page', 'go to GDSN page',
+            'GDSN', 'GDSN page', 'GDSN section',
+            'navigate to GDSN page', 'go to GDSN page',
+            'GDSN', 'GDSN page', 'GDSN section',
+            'navigate to GDSN page', 'go to GDSN page','GDSN'
+        ],
+        path: 'GDSN',
+        suggestion: 'navigate to GDSN page'
+    },
+    nationalproductcatalogue:{
+        synonyms: ['national product catalogue', 'national product catalogue page', 'national product catalogue section',
+            'navigate to national product catalogue page', 'go to national product catalogue page',
+            'national product catalogue', 'national product catalogue page', 'national product catalogue section',
+            'navigate to national product catalogue page', 'go to national product catalogue page',
+            'national product catalogue', 'national product catalogue page', 'national product catalogue section',
+            'navigate to national product catalogue page', 'go to national product catalogue page','national product catalogue'
+        ],
+        path: 'national-product-catalogue',
+        suggestion: 'navigate to national product catalogue page'
+    },
+    searchgpc:{
+        synonyms: ['search gpc', 'search gpc page', 'search gpc section',
+            'navigate to search gpc page', 'go to search gpc page',
+            'search gpc', 'search gpc page', 'search gpc section',
+            'navigate to search gpc page', 'go to search gpc page',
+            'search gpc', 'search gpc page', 'search gpc section',
+            'navigate to search gpc page', 'go to search gpc page','search gpc'
+        ],
+        path: 'search-gpc',
+        suggestion: 'navigate to search gpc page'
+    },
+    digitallink:{
+        synonyms: ['digital link', 'digital link page', 'digital link section',
+            'navigate to digital link page', 'go to digital link page',
+            'digital link', 'digital link page', 'digital link section',
+            'navigate to digital link page', 'go to digital link page',
+            'digital link', 'digital link page', 'digital link section',
+            'navigate to digital link page', 'go to digital link page','digital link'
+        ],
+        path: 'digital-link',
+        suggestion: 'navigate to digital link page'
+    },
+    globalproductclassification:{
+        synonyms: ['global product classification', 'global product classification page', 'global product classification section',
+            'navigate to global product classification page', 'go to global product classification page',
+            'global product classification', 'global product classification page', 'global product classification section',
+            'navigate to global product classification page', 'go to global product classification page',
+            'global product classification', 'global product classification page', 'global product classification section',
+            'navigate to global product classification page', 'go to global product classification page','global product classification'
+        ],
+        path: 'global-product-classification',
+        suggestion: 'navigate to global product classification page'
+    },
+    listofregisteredproducts:{
+        synonyms: ['list of registered products', 'list of registered products page', 'list of registered products section',
+            'navigate to list of registered products page', 'go to list of registered products page',
+            'list of registered products', 'list of registered products page', 'list of registered products section',
+            'navigate to list of registered products page', 'go to list of registered products page',
+            'list of registered products', 'list of registered products page', 'list of registered products section',
+            'navigate to list of registered products page', 'go to list of registered products page','list of registered products'
+        ],
+        path: 'list-of-registered-products',
+        suggestion: 'navigate to list of registered products page'
+    },
+    gepir:{
+        synonyms: ['gepir', 'gepir page', 'gepir section',
+            'navigate to gepir page', 'go to gepir page',
+            'gepir', 'gepir page', 'gepir section',
+            'navigate to gepir page', 'go to gepir page',
+            'gepir', 'gepir page', 'gepir section',
+            'navigate to gepir page', 'go to gepir page','gepir'
+        ],
+        path: 'gepir',
+        suggestion: 'navigate to gepir page'
+    },
+    checkdigit:{
+        synonyms: ['check digit', 'check digit page', 'check digit section',
+            'navigate to check digit page', 'go to check digit page',
+            'check digit', 'check digit page', 'check digit section',
+            'navigate to check digit page', 'go to check digit page',
+            'check digit', 'check digit page', 'check digit section',
+            'navigate to check digit page', 'go to check digit page','check digit'
+        ],
+        path: 'check-digit',
+        suggestion: 'navigate to check digit page'
+    },
+    listofregisteredmembers:{
+        synonyms: ['list of registered members', 'list of registered members page', 'list of registered members section',
+            'navigate to list of registered members page', 'go to list of registered members page',
+            'list of registered members', 'list of registered members page', 'list of registered members section',
+            'navigate to list of registered members page', 'go to list of registered members page',
+            'list of registered members', 'list of registered members page', 'list of registered members section',
+            'navigate to list of registered members page', 'go to list of registered members page','list of registered members'
+        ],
+        path: 'list-of-registered-members',
+        suggestion: 'navigate to list of registered members page'
+    },
+    gtinreporter:{
+        synonyms: ['gtin reporter', 'gtin reporter page', 'gtin reporter section',
+            'navigate to gtin reporter page', 'go to gtin reporter page',
+            'gtin reporter', 'gtin reporter page', 'gtin reporter section',
+            'navigate to gtin reporter page', 'go to gtin reporter page',
+            'gtin reporter', 'gtin reporter page', 'gtin reporter section',
+            'navigate to gtin reporter page', 'go to gtin reporter page','gtin reporter'
+        ],
+        path: 'gtin-reporter',
+        suggestion: 'navigate to gtin reporter page'
+    },
+    gs1helpdesk:{
+        synonyms: ['gs1 helpdesk', 'gs1 helpdesk page', 'gs1 helpdesk section',
+            'navigate to gs1 helpdesk page', 'go to gs1 helpdesk page',
+            'gs1 helpdesk', 'gs1 helpdesk page', 'gs1 helpdesk section',
+            'navigate to gs1 helpdesk page', 'go to gs1 helpdesk page',
+            'gs1 helpdesk', 'gs1 helpdesk page', 'gs1 helpdesk section',
+            'navigate to gs1 helpdesk page', 'go to gs1 helpdesk page','gs1 helpdesk'
+        ],
+        path: 'gs1-helpdesk',
+        suggestion: 'navigate to gs1 helpdesk page'
+    },
+    contactus:{
+        synonyms: ['contact us', 'contact us page', 'contact us section',
+            'navigate to contact us page', 'go to contact us page',
+            'contact us', 'contact us page', 'contact us section',
+            'navigate to contact us page', 'go to contact us page',
+            'contact us', 'contact us page', 'contact us section',
+            'navigate to contact us page', 'go to contact us page','contact us'
+        ],
+        path: 'contact-us',
+        suggestion: 'navigate to contact us page'
+    },
+    
 };
