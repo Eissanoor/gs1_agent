@@ -528,8 +528,8 @@ module.exports = {
             'navigate to contact us page', 'go to contact us page',
             'contact us', 'contact us page', 'contact us section',
             'navigate to contact us page', 'go to contact us page',
-            'contact us', 'contact us page', 'contact us section',
-            'navigate to contact us page', 'go to contact us page','contact us'
+            'contact', 'contact us page', 'contact us section',
+            'navigate to contact us page', 'go to contact us page','contactus'
         ],
         path: 'contact-us',
         suggestion: 'navigate to contact us page'

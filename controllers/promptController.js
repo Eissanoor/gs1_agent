@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const stringSimilarity = require('string-similarity');
 
 const BASE_URL = 'http://localhost:3092/';
 
@@ -95,10 +96,14 @@ exports.handlePrompt = async (req, res) => {
         if (low.includes('english') || low.includes('arabic')) {
             suggestions = getSuggestions('language');
         } else {
-            suggestions = getSuggestions('navigation');
+            // Use fuzzy match to suggest the closest navigation command
+            const navSug = getSuggestions('navigation');
+            const best = stringSimilarity.findBestMatch(low, navSug).bestMatch.target;
+            // Place best match first, then shuffle the rest
+            suggestions = [best, ...shuffle(navSug.filter(s => s !== best))];
         }
         // cap the number of suggestions
-        suggestions = shuffle(suggestions).slice(0, 15);
+        suggestions = suggestions.slice(0, 6);
         return res.status(400).json({ status: 'failed', message: 'Unrecognized prompt.', suggestions });
     }
 
