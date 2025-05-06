@@ -23,6 +23,8 @@ async function getActivePage() {
     const browser = await getBrowser();
     if (!activePage) {
         activePage = await browser.newPage();
+        // Navigate to home once on new page creation
+        await activePage.goto(BASE_URL, { waitUntil: 'networkidle2' });
     }
     return activePage;
 }
@@ -63,9 +65,8 @@ exports.handlePrompt = async (req, res) => {
     }
 
     try {
-        // Get persistent page and navigate base
+        // Get persistent page
         const page = await getActivePage();
-        await page.goto(BASE_URL, { waitUntil: 'networkidle2' });
 
         if (action === 'about') {
             await page.goto(`${BASE_URL}about-us`, { waitUntil: 'networkidle2' });
