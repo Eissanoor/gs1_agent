@@ -1,2 +1,3 @@
 node_modules/
 global_actions_log.json
+.env
