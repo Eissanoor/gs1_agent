@@ -87,12 +87,12 @@ module.exports = {
         suggestion: 'navigate to home page'
     },
     gs1inretail:{
-        synonyms: ['gs1 in retail', 'gs1 in retail page', 'gs1 in retail section',
-            'navigate to gs1 in retail page', 'go to gs1 in retail page',
-            'gs1 in retail', 'gs1 in retail page', 'gs1 in retail section',
-            'navigate to gs1 in retail page', 'go to gs1 in retail page',
-            'gs1 in retail', 'gs1 in retail page', 'gs1 in retail section',
-            'navigate to gs1 in retail page', 'go to gs1 in retail page',
+        synonyms: ['go to gs1 retail page', 'retail page', 'retail',
+            'navigate to gs1 retail page', 'go to gs1 retail page',
+            'gs1 retail', 'gs1 retail page', 'gs1 retail section',
+            'navigate to gs1 retail page', 'go to gs1 retail page',
+            'gs1 retail', 'gs1 retail page', 'gs1 retail section',
+            'navigate to gs1 retail page', 'go to gs1 retail page',
         ],
         path: 'gs1-in-retail',
         suggestion: 'navigate to gs1 in retail page'
@@ -253,18 +253,18 @@ module.exports = {
         path: 'gs1-healthcare',
         suggestion: 'navigate to gs1 healthcare page'
     },
-    GLN:{
+    gln:{
         synonyms: ['GLN', 'GLN page', 'GLN section',
             'navigate to GLN page', 'go to GLN page',
             'GLN', 'GLN page', 'GLN section',
-            'navigate to GLN page', 'go to GLN page',
+            'go to GLN page',
             'GLN', 'GLN page', 'GLN section',
-            'navigate to GLN page', 'go to GLN page','GLN',
+             'go to GLN page','GLN',
             'location visibility','navigate to location visibility page', 'go to location visibility page',
             'location visibility', 'location visibility page', 'location visibility section',
             'navigate to location visibility page', 'go to location visibility page','location visibility'
         ],
-        path: 'GLN',
+        path: 'gln',
         suggestion: 'navigate to GLN page'
     },
 };

@@ -69,7 +69,7 @@ function parsePrompt(prompt) {
     if (low.includes('arabic')) return 'langar';
     // navigation commands
     for (const [key, action] of Object.entries(ACTIONS)) {
-        if (action.synonyms.some(s => low.includes(s))) {
+        if (action.synonyms.some(s => low.includes(s.toLowerCase()))) {
             return key;
         }
     }
@@ -95,7 +95,7 @@ exports.handlePrompt = async (req, res) => {
             suggestions = getSuggestions('navigation');
         }
         // cap the number of suggestions
-        suggestions = shuffle(suggestions).slice(0, 8);
+        suggestions = shuffle(suggestions).slice(0, 15);
         return res.status(400).json({ status: 'failed', message: 'Unrecognized prompt.', suggestions });
     }
 
