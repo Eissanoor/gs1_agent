@@ -95,7 +95,7 @@ exports.handlePrompt = async (req, res) => {
             suggestions = getSuggestions('navigation');
         }
         // cap the number of suggestions
-        suggestions = shuffle(suggestions).slice(0, 5);
+        suggestions = shuffle(suggestions).slice(0, 8);
         return res.status(400).json({ status: 'failed', message: 'Unrecognized prompt.', suggestions });
     }
 
