@@ -51,6 +51,16 @@ function getSuggestions(type = 'all') {
     return [...langSug, ...navSug];
 }
 
+// Fisher-Yates shuffle
+function shuffle(array) {
+    const a = [...array];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
 // Helper: Simple prompt parsing
 function parsePrompt(prompt) {
     const low = prompt.toLowerCase();
@@ -85,7 +95,7 @@ exports.handlePrompt = async (req, res) => {
             suggestions = getSuggestions('navigation');
         }
         // cap the number of suggestions
-        suggestions = suggestions.slice(0, 5);
+        suggestions = shuffle(suggestions).slice(0, 5);
         return res.status(400).json({ status: 'failed', message: 'Unrecognized prompt.', suggestions });
     }
 
