@@ -2,6 +2,25 @@ const puppeteer = require('puppeteer');
 
 const BASE_URL = 'http://localhost:3092/';
 
+// Configurable actions for scalability
+const ACTIONS = {
+    about: {
+        synonyms: ['about us', 'about'],
+        path: 'about-us',
+        suggestion: 'navigate to about us page'
+    },
+    whychoose: {
+        synonyms: ['why choose us', 'why choose'],
+        path: 'why-choose-us',
+        suggestion: 'navigate to why choose us page'
+    },
+    team: {
+        synonyms: ['our team', 'team'],
+        path: 'our-team',
+        suggestion: 'navigate to our team page'
+    }
+};
+
 // Store browser instance globally
 let globalBrowser = null;
 
@@ -38,29 +57,25 @@ async function getPageForSession(sessionId) {
 
 // Helper: Get suggestions for valid actions
 function getSuggestions() {
-    return [
+    const langSug = [
         'change language to English',
-        'change language to Arabic',
-        'navigate to about us page',
-        'navigate to why choose us page',
-        'navigate to our team page',
+        'change language to Arabic'
     ];
+    const navSug = Object.values(ACTIONS).map(a => a.suggestion);
+    return [...langSug, ...navSug];
 }
 
 // Helper: Simple prompt parsing
 function parsePrompt(prompt) {
-    prompt = prompt.toLowerCase();
-    if (prompt.includes('english')) {
-        return 'langen';
-    } else if (prompt.includes('arabic')) {
-        return 'langar';
-    }
-    if (prompt.includes('about us')) {
-        return 'about';
-    } else if (prompt.includes('why choose us')) {
-        return 'whychoose';
-    } else if (prompt.includes('team')) {
-        return 'team';
+    const low = prompt.toLowerCase();
+    // language commands
+    if (low.includes('english')) return 'langen';
+    if (low.includes('arabic')) return 'langar';
+    // navigation commands
+    for (const [key, action] of Object.entries(ACTIONS)) {
+        if (action.synonyms.some(s => low.includes(s))) {
+            return key;
+        }
     }
     return null;
 }
@@ -96,24 +111,14 @@ exports.handlePrompt = async (req, res) => {
         // Determine language prefix for URLs
         const lang = sessionLangMap.get(sessionId) || 'en';
 
-        if (action === 'about') {
-            await page.goto(`${BASE_URL}about-us`, { waitUntil: 'networkidle2' });
+        // handle configured navigation
+        if (ACTIONS[action]) {
+            const { path: p, suggestion } = ACTIONS[action];
+            await page.goto(`${BASE_URL}${p}`, { waitUntil: 'networkidle2' });
             result.status = 'success';
-            result.message = 'Navigated to About Us page.';
+            result.message = suggestion.replace('navigate to', 'Navigated to');
             result.language = lang;
-            result.url = '/about-us';
-        } else if (action === 'whychoose') {
-            await page.goto(`${BASE_URL}why-choose-us`, { waitUntil: 'networkidle2' });
-            result.status = 'success';
-            result.message = 'Navigated to Why Choose US page.';
-            result.language = lang;
-            result.url = '/why-choose-us';
-        } else if (action === 'team') {
-            await page.goto(`${BASE_URL}our-team`, { waitUntil: 'networkidle2' });
-            result.status = 'success';
-            result.message = 'Navigated to Our Team page.';
-            result.language = lang;
-            result.url = '/our-team';
+            result.url = `/${p}`;
         }
 
         // Return result without closing browser, so tab stays open
