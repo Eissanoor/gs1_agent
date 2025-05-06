@@ -4,18 +4,30 @@ const BASE_URL = 'http://localhost:3092/';
 
 // Configurable actions for scalability
 const ACTIONS = {
+    //give me the all words 10 possibliy
+
     about: {
-        synonyms: ['about us', 'about'],
+        synonyms: ['about us', 'about' , 'about us page', 'about page', 
+            'about us section', 'about page section', 'navigate to about us page',
+             'navigate to about page', 'about us section', 'about page section'  ],
         path: 'about-us',
         suggestion: 'navigate to about us page'
     },
     whychoose: {
-        synonyms: ['why choose us', 'why choose'],
+        synonyms: ['why choose us', 'why choose' , 'why choose us page', 
+            'why choose page', 'why choose us section',
+             'why choose page section', 'navigate to why choose us page',
+              'navigate to why choose page', 'why choose us section', 
+              'why choose page section'    ],
         path: 'why-choose-us',
         suggestion: 'navigate to why choose us page'
     },
     team: {
-        synonyms: ['our team', 'team'],
+        synonyms: ['our team', 'team' , 'our team page', 'team page', 
+            'our team section', 'go to our team page', 
+            'go to team page', 'navigate to our team page', 
+            'navigate to team page', 'our team section', 
+            'team page section'  ],
         path: 'our-team',
         suggestion: 'navigate to our team page'
     }
@@ -98,12 +110,16 @@ exports.handlePrompt = async (req, res) => {
         const sessionId = req.headers['x-session-id'] || req.ip;
         const page = await getPageForSession(sessionId);
 
-        // Handle language change commands
+        // Handle language change commands by clicking flags in browser
         if (action === 'langen') {
+            await page.waitForSelector('#flag-en', { visible: true });
+            await page.click('#flag-en');
             sessionLangMap.set(sessionId, 'en');
             return res.json({ status: 'success', message: 'Language set to English.', language: 'en' });
         }
         if (action === 'langar') {
+            await page.waitForSelector('#flag-ar', { visible: true });
+            await page.click('#flag-ar');
             sessionLangMap.set(sessionId, 'ar');
             return res.json({ status: 'success', message: 'Language set to Arabic.', language: 'ar' });
         }
