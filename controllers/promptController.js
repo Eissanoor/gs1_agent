@@ -2,6 +2,31 @@ const puppeteer = require('puppeteer');
 
 const BASE_URL = 'http://localhost:3092/';
 
+// Store browser instance globally
+let globalBrowser = null;
+let activePage = null;
+
+// Function to get or create browser instance
+async function getBrowser() {
+    if (!globalBrowser) {
+        globalBrowser = await puppeteer.launch({
+            headless: false,
+            defaultViewport: null,
+            args: ['--start-maximized']
+        });
+    }
+    return globalBrowser;
+}
+
+// Function to get or create active page
+async function getActivePage() {
+    const browser = await getBrowser();
+    if (!activePage) {
+        activePage = await browser.newPage();
+    }
+    return activePage;
+}
+
 // Helper: Get suggestions for valid actions
 function getSuggestions() {
     return [
@@ -37,10 +62,9 @@ exports.handlePrompt = async (req, res) => {
         return res.status(400).json({ status: 'failed', message: 'Unrecognized prompt.', suggestions: getSuggestions() });
     }
 
-    let browser;
     try {
-        browser = await puppeteer.launch({ headless: false });
-        const page = await browser.newPage();
+        // Get persistent page and navigate base
+        const page = await getActivePage();
         await page.goto(BASE_URL, { waitUntil: 'networkidle2' });
 
         if (action === 'about') {
@@ -57,11 +81,9 @@ exports.handlePrompt = async (req, res) => {
             result.message = 'Navigated to Our Team page.';
         }
 
-        // live navigation done, returning result
-        await browser.close();
+        // Return result without closing browser, so tab stays open
         return res.json(result);
     } catch (error) {
-        if (browser) await browser.close();
         return res.status(500).json({ status: 'error', message: 'Failed to perform action.', error: error.message });
     }
 };
