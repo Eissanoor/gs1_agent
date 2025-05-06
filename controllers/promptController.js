@@ -2,36 +2,8 @@ const puppeteer = require('puppeteer');
 
 const BASE_URL = 'http://localhost:3092/';
 
-// Configurable actions for scalability
-const ACTIONS = {
-    //give me the all words 10 possibliy
-
-    about: {
-        synonyms: ['about us', 'about' , 'about us page', 'about page', 
-            'about us section', 'about page section', 'navigate to about us page',
-             'navigate to about page', 'about us section', 'about page section'  ],
-        path: 'about-us',
-        suggestion: 'navigate to about us page'
-    },
-    whychoose: {
-        synonyms: ['why choose us', 'why choose' , 'why choose us page', 
-            'why choose page', 'why choose us section',
-             'why choose page section', 'navigate to why choose us page',
-              'navigate to why choose page', 'why choose us section', 
-              'why choose page section'    ],
-        path: 'why-choose-us',
-        suggestion: 'navigate to why choose us page'
-    },
-    team: {
-        synonyms: ['our team', 'team' , 'our team page', 'team page', 
-            'our team section', 'go to our team page', 
-            'go to team page', 'navigate to our team page', 
-            'navigate to team page', 'our team section', 
-            'team page section'  ],
-        path: 'our-team',
-        suggestion: 'navigate to our team page'
-    }
-};
+// Configurable actions for scalability (imported from config/actions.js)
+const ACTIONS = require('../config/actions');
 
 // Store browser instance globally
 let globalBrowser = null;
@@ -67,13 +39,15 @@ async function getPageForSession(sessionId) {
     return pageMap.get(sessionId);
 }
 
-// Helper: Get suggestions for valid actions
-function getSuggestions() {
+// Helper: Get suggestions for language, navigation, or both
+function getSuggestions(type = 'all') {
     const langSug = [
         'change language to English',
         'change language to Arabic'
     ];
     const navSug = Object.values(ACTIONS).map(a => a.suggestion);
+    if (type === 'language') return langSug;
+    if (type === 'navigation') return navSug;
     return [...langSug, ...navSug];
 }
 
@@ -102,7 +76,15 @@ exports.handlePrompt = async (req, res) => {
     let result = { prompt };
 
     if (!action) {
-        return res.status(400).json({ status: 'failed', message: 'Unrecognized prompt.', suggestions: getSuggestions() });
+        // Contextual suggestions based on prompt intent
+        const low = prompt.toLowerCase();
+        let suggestions;
+        if (low.includes('english') || low.includes('arabic')) {
+            suggestions = getSuggestions('language');
+        } else {
+            suggestions = getSuggestions('navigation');
+        }
+        return res.status(400).json({ status: 'failed', message: 'Unrecognized prompt.', suggestions });
     }
 
     try {
