@@ -1,4 +1,4 @@
-// Enhanced promptControllerv2: DB lookups with thinking process
+// Enhanced promptControllerV2: DB lookups with thinking process and cleaned responses
 require('dotenv').config();
 const prisma = require('../prismaClient');
 const fetch = require('node-fetch').default;
@@ -68,7 +68,7 @@ exports.handlePrompt = async (req, res) => {
       const cleaned = pages.map(p => ({
         id: p.id,
         page_name: p.name,
-        content: p.custom_section_data.replace(/<[^>]+>/g, '')
+        content: cleanContent(p.custom_section_data)
       }));
       
       // Step 4: Rank the results by relevance to the prompt
@@ -83,20 +83,24 @@ exports.handlePrompt = async (req, res) => {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${process.env.HF_API_KEY}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          inputs: `Context: ${context}\n\nQuestion: ${prompt}\n\nPlease provide a detailed and accurate answer based on the context.` 
+          inputs: `Context: ${context}\n\nQuestion: ${prompt}\n\nPlease provide a detailed and accurate answer based on the context.`
         })
       });
       
       const data = await response.json();
       
       // HF returns { generated_text } or array
-      const answer = Array.isArray(data) ? data[0].generated_text : data.generated_text;
+      const answer = cleanContent(Array.isArray(data) ? data[0].generated_text : data.generated_text);
       
       // Step 7: Return the response with the thinking process
       return res.json({ 
         status: 'success', 
         thinking: thinkingProcess,
-        sources: rankedResults.map(r => ({ id: r.id, page_name: r.page_name , content: r.content })),
+        sources: rankedResults.map(r => ({ 
+          id: r.id, 
+          page_name: r.page_name, 
+          content: r.content 
+        })),
         answer: answer
       });
     }
@@ -113,6 +117,38 @@ exports.handlePrompt = async (req, res) => {
     return res.status(500).json({ status: 'error', message: error.message });
   }
 };
+
+/**
+ * Cleans content by removing HTML tags, fixing whitespace, and normalizing special characters
+ * @param {string} content - The content to clean
+ * @returns {string} - The cleaned content
+ */
+function cleanContent(content) {
+  if (!content) return '';
+  
+  // Remove HTML tags
+  let cleaned = content.replace(/<[^>]+>/g, '');
+  
+  // Replace HTML entities
+  cleaned = cleaned.replace(/&nbsp;/g, ' ');
+  cleaned = cleaned.replace(/&amp;/g, '&');
+  cleaned = cleaned.replace(/&lt;/g, '<');
+  cleaned = cleaned.replace(/&gt;/g, '>');
+  cleaned = cleaned.replace(/&quot;/g, '"');
+  cleaned = cleaned.replace(/&apos;/g, "'");
+  
+  // Normalize whitespace
+  cleaned = cleaned.replace(/\s+/g, ' ');
+  
+  // Fix special quotes and dashes
+  cleaned = cleaned.replace(/[“”]/g, '"');
+  cleaned = cleaned.replace(/[‘’]/g, "'");
+  cleaned = cleaned.replace(/–/g, '-');
+  cleaned = cleaned.replace(/—/g, '--');
+  
+  // Trim and return
+  return cleaned.trim();
+}
 
 /**
  * Analyzes the prompt to determine what information is needed
