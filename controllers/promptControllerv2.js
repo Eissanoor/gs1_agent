@@ -64,21 +64,31 @@ exports.handlePrompt = async (req, res) => {
     
     // Step 3: Process the data if found
     if (pages.length) {
+      // Use a Set to ensure unique IDs
+      const uniquePages = [];
+      const seenIds = new Set();
+
+      for (const page of pages) {
+        if (!seenIds.has(page.id)) {
+          seenIds.add(page.id);
+          uniquePages.push(page);
+        }
+      }
+
       // Clean HTML and prepare context
-      const cleaned = pages.map(p => ({
+      const cleaned = uniquePages.map(p => ({
         id: p.id,
         page_name: p.name,
-        content: cleanContent(p.custom_section_data)
+        content: cleanContent(p.custom_section_data).substring(0, 600) // Limit content to 300 characters
       }));
-      
+
       // Step 4: Rank the results by relevance to the prompt
       const rankedResults = rankResultsByRelevance(cleaned, prompt);
-      
+
       // Step 5: Prepare the context from the most relevant results
       const context = rankedResults.map(r => r.content).join("\n\n");
-      
+
       // Step 6: Generate a thoughtful response using the context
-      // Use HF Inference API with Flan-T5 for Q&A
       const response = await fetch('https://api-inference.huggingface.co/models/google/flan-t5-large', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${process.env.HF_API_KEY}`, 'Content-Type': 'application/json' },
@@ -86,12 +96,12 @@ exports.handlePrompt = async (req, res) => {
           inputs: `Context: ${context}\n\nQuestion: ${prompt}\n\nPlease provide a detailed and accurate answer based on the context.`
         })
       });
-      
+
       const data = await response.json();
-      
+
       // HF returns { generated_text } or array
       const answer = cleanContent(Array.isArray(data) ? data[0].generated_text : data.generated_text);
-      
+
       // Step 7: Return the response with the thinking process
       return res.json({ 
         status: 'success', 
