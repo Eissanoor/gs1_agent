@@ -16,74 +16,67 @@ exports.handlePrompt = async (req, res) => {
     
     // Step 2: Search for relevant data in the database
     // First try exact matching with contains
-    let pages = await prisma.pages.findMany({
+    let agents = await prisma.aiAgent.findMany({
       where: {
-        custom_section_data: {
+        content: {
           contains: prompt
         }
       },
       take: 5, // Get more results for better context
       select: { 
-        custom_section_data: true,
-        name: true,
+        content: true,
+        key: true,
         id: true
       }
     });
     
     // If no exact matches, try keyword-based search
-    if (pages.length === 0) {
+    if (agents.length === 0) {
       const keywords = extractKeywords(prompt);
       
       // Search for each keyword
       for (const keyword of keywords) {
         if (keyword.length < 3) continue; // Skip very short keywords
         
-        const keywordResults = await prisma.pages.findMany({
+        const keywordResults = await prisma.aiAgent.findMany({
           where: {
-            custom_section_data: {
+            content: {
               contains: keyword
             }
           },
           take: 3,
           select: { 
-            custom_section_data: true,
-            name: true,
+            content: true,
+            key: true,
             id: true
           }
         });
         
-        pages = [...pages, ...keywordResults];
+        agents = [...agents, ...keywordResults];
         
         // Limit to 5 total results
-        if (pages.length >= 5) {
-          pages = pages.slice(0, 5);
+        if (agents.length >= 5) {
+          agents = agents.slice(0, 5);
           break;
         }
       }
     }
     
     // Step 3: Process the data if found
-    if (pages.length) {
+    if (agents.length) {
       // Use a Set to ensure unique IDs
-      const uniquePages = [];
+      const uniqueAgents = [];
       const seenIds = new Set();
 
-      for (const page of pages) {
-        if (!seenIds.has(page.id)) {
-          seenIds.add(page.id);
-          uniquePages.push(page);
+      for (const agent of agents) {
+        if (!seenIds.has(agent.id)) {
+          seenIds.add(agent.id);
+          uniqueAgents.push(agent);
         }
       }
 
-      // Clean HTML and prepare context
-      const cleaned = uniquePages.map(p => ({
-        id: p.id,
-        page_name: p.name,
-        content: cleanContent(p.custom_section_data).substring(0, 600) // Limit content to 300 characters
-      }));
-
       // Step 4: Rank the results by relevance to the prompt
-      const rankedResults = rankResultsByRelevance(cleaned, prompt);
+      const rankedResults = rankResultsByRelevance(uniqueAgents, prompt);
 
       // Step 5: Prepare the context from the most relevant results
       const context = rankedResults.map(r => r.content).join("\n\n");
@@ -100,7 +93,7 @@ exports.handlePrompt = async (req, res) => {
       const data = await response.json();
 
       // HF returns { generated_text } or array
-      const answer = cleanContent(Array.isArray(data) ? data[0].generated_text : data.generated_text);
+      const answer = Array.isArray(data) ? data[0].generated_text : data.generated_text;
 
       // Step 7: Return the response with the thinking process
       return res.json({ 
@@ -108,7 +101,7 @@ exports.handlePrompt = async (req, res) => {
         thinking: thinkingProcess,
         sources: rankedResults.map(r => ({ 
           id: r.id, 
-          page_name: r.page_name, 
+          key: r.key, 
           content: r.content 
         })),
         answer: answer
@@ -151,8 +144,8 @@ function cleanContent(content) {
   cleaned = cleaned.replace(/\s+/g, ' ');
   
   // Fix special quotes and dashes
-  cleaned = cleaned.replace(/[“”]/g, '"');
-  cleaned = cleaned.replace(/[‘’]/g, "'");
+  cleaned = cleaned.replace(/[""]/g, '"');
+  cleaned = cleaned.replace(/['']/g, "'");
   cleaned = cleaned.replace(/–/g, '-');
   cleaned = cleaned.replace(/—/g, '--');
   
