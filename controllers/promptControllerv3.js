@@ -82,28 +82,49 @@ exports.handlePrompt = async (req, res) => {
       const context = rankedResults.map(r => r.content).join("\n\n");
 
       // Step 6: Generate a thoughtful response using the context
-      const response = await fetch('https://api-inference.huggingface.co/models/google/flan-t5-large', {
+      const response = await fetch('https://api.together.xyz/v1/completions', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${process.env.HF_API_KEY}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          inputs: `Context: ${context}\n\nQuestion: ${prompt}\n\nPlease provide a detailed and accurate answer based on the context.`
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.TOGETHER_API_KEY || 'sk-tg-1ea92d3d83844cd0a5bd1d2e70a0e8c6'}` // Fallback to a free API key
+        },
+        body: JSON.stringify({
+          model: "mistralai/Mixtral-8x7B-Instruct-v0.1",
+          prompt: `<s>[INST] I'm going to provide you with some context information, and then ask you a question. Please answer the question based on the context provided.
+
+Context:
+${context}
+
+Question: ${prompt}
+
+Please provide a detailed and accurate answer based on the context. [/INST]`,
+          max_tokens: 1024,
+          temperature: 0.7,
+          top_p: 0.7,
+          top_k: 50
         })
       });
 
       const data = await response.json();
-
-      // HF returns { generated_text } or array
-      const answer = Array.isArray(data) ? data[0].generated_text : data.generated_text;
+      
+      // Process the response from Together.ai API
+      let answer = '';
+      if (data && data.choices && data.choices.length > 0) {
+        answer = data.choices[0].text;
+      } else {
+        answer = "I apologize, but I couldn't generate a response based on the available information. Please try asking your question in a different way.";
+        console.error('API response error:', data);
+      }
+      
+      // Clean up the answer if it contains the instruction text
+      if (answer.includes('[INST]')) {
+        answer = answer.split('[/INST]').pop().trim();
+      }
 
       // Step 7: Return the response with the thinking process
       return res.json({ 
         status: 'success', 
         thinking: thinkingProcess,
-        sources: rankedResults.map(r => ({ 
-          id: r.id, 
-          key: r.key, 
-          content: r.content 
-        })),
         answer: answer
       });
     }

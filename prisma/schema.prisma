@@ -2745,7 +2745,9 @@ model AiAgent {
   id        String   @id
   key       String   @unique
   content   String   @db.NVarChar(Max)
+  contentAr String?  @db.NVarChar(Max)
   questions String?  @db.NVarChar(Max)
+  questionsAr String? @db.NVarChar(Max) 
   isCurrent Boolean  @default(true)
   createdAt DateTime @default(now())
 }
