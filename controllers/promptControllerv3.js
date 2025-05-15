@@ -1,8 +1,13 @@
 // Enhanced promptControllerV2: DB lookups with thinking process and cleaned responses
 require('dotenv').config();
 const prisma = require('../prismaClient');
-const fetch = require('node-fetch').default;
 const stringSimilarity = require('string-similarity');
+
+// Use dynamic import for node-fetch
+let fetch;
+(async () => {
+  fetch = (await import('node-fetch')).default;
+})();
 
 exports.handlePrompt = async (req, res) => {
   const { prompt } = req.body;
